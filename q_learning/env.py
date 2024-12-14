@@ -39,10 +39,14 @@ class Env():
 
         # Compute the reward
         if self.agent == self.goal:
-            return 100
+            reward = 100
+            done = True
         elif self.agent in self.obstacles:
-            return -100
+            reward = -100
+            done = True
         else:
-            return -1
+            reward = -1
+            done = False
+        return reward, done
 
     

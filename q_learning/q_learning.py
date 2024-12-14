@@ -1,5 +1,6 @@
 import numpy as np
 import random
+import matplotlib.pyplot as plt
 
 from env import Env
 
@@ -27,12 +28,15 @@ class QLearning:
     def learn(self, num_episodes=1000):
         ''' Train Q-learning agent
         '''
+        cumulative_rewards = []
         for _ in range(num_episodes):
             self.env.reset()
-            while self.env.agent != self.env.goal:
+            done = False
+            cumulative_reward = 0
+            while not done:
                 r, c = self.env.agent
                 action = self.choose_action(self.env.agent)
-                reward = self.env.step(action)
+                reward, done = self.env.step(action)
                 nr, nc = self.env.agent
 
                 # Q-learning update
@@ -41,6 +45,11 @@ class QLearning:
                     self.gamma * np.max(self.Q_table[nr, nc]) - \
                     self.Q_table[r, c, self.env.action_space.index(action)]
                 )
+                
+                # Update cumulative reward 
+                cumulative_reward += reward
+            cumulative_rewards.append(cumulative_reward)
+        return cumulative_rewards
     
     def execution(self, state):
         # Extract optimal path
@@ -57,9 +66,17 @@ if __name__ == "__main__":
     # Learning process
     env = Env()
     planner = QLearning(env)
-    planner.learn(num_episodes=1000)
+    cumulative_rewards = planner.learn(num_episodes=1000)
 
     # Execution
     state = (1, 2)
     path = planner.execution(state)
     print("Optimal Path:", path)
+
+    # Plot
+    plt.figure()
+    plt.plot(cumulative_rewards)
+    plt.xlabel('Episode')
+    plt.ylabel('Cumulative reward')
+    plt.tight_layout()
+    plt.show()
