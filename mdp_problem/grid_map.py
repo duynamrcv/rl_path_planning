@@ -12,9 +12,9 @@ class GridMap():
         ''' Environment configuration
         '''
         self.rows = 5
-        self.cols = 5
-        self.goal = (0, 4)
-        self.obstacles = [(2, 2), (3, 3), (0, 3), (1, 3), (2, 3)]
+        self.cols = 8
+        self.goal = (4, 7)
+        self.obstacles = [(0, 4), (1, 1), (1, 2), (1, 4), (1, 6), (2, 2), (3, 0), (3, 4), (3, 5), (3, 7), (4, 2), (4, 5)]
 
     def reset(self):
         ''' Reset environment and agent
