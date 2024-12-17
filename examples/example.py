@@ -4,6 +4,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from mdp_problem.grid_map import GridMap
 from model_free.q_learning import QLearning
+from model_free.sarsa import SARSA
 from multi_armed_bandit.softmax import Softmax
 from multi_armed_bandit.upper_confidence_bound import UCB1
 
@@ -23,8 +24,8 @@ def plot_environment_and_path(mdp:GridMap, path):
     goal = path[-1]
     path = np.array(path)   # Path
     plt.plot(path[:,1], path[:,0], linewidth=5)
-    plt.scatter(start[1], start[0], color="green", s=100, label="Start")  # Start point
-    plt.scatter(goal[1], goal[0], color="red", s=100, label="Goal")      # Goal point
+    plt.scatter(start[1], start[0], color="green", s=100, label="Start", zorder=2)  # Start point
+    plt.scatter(goal[1], goal[0], color="red", s=100, label="Goal", zorder=2)      # Goal point
 
     # Customize the grid
     plt.xticks(range(environment.shape[1]))
@@ -45,6 +46,7 @@ if __name__ == "__main__":
     mdp = GridMap()
     bandit = UCB1()
     planner = QLearning(mdp, bandit)
+    # planner = SARSA(mdp, bandit)
     cumulative_rewards = planner.learn(episodes=1000)
 
     # Execution
