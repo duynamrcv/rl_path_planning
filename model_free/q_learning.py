@@ -1,14 +1,16 @@
 import numpy as np
 import random
 from mdp_problem.grid_map import GridMap
+from multi_armed_bandit.multi_armed_bandit import MultiArmedBandit
 
 class QLearning():
-    def __init__(self, mdp:GridMap, learning_rate=0.01, reward_decay=0.9, explore_rate=0.9):
+    def __init__(self, mdp:GridMap, bandit:MultiArmedBandit,
+                 learning_rate=0.01, reward_decay=0.9):
         self.mdp = mdp
+        self.bandit = bandit
 
         self.lr = learning_rate
         self.gamma = reward_decay
-        self.epsilon = explore_rate
 
         # Initialize Q-table    
         self.Q_table = np.zeros((self.mdp.rows,
@@ -18,18 +20,17 @@ class QLearning():
     def choose_action(self, state):
         ''' Choose action (epsilon-greedy)
         '''
-        if random.uniform(0, 1) < self.epsilon:
-            return random.choice(self.mdp.action_space)  # Explore
-        else:
-            row, col = state
-            return self.mdp.action_space[np.argmax(self.Q_table[row, col])]  # Exploit
+        return self.bandit.select(state, self.mdp.action_space, self.Q_table)
         
     def learn(self, episodes=2000):
         ''' Train Q-learning agent
         '''
         cumulative_rewards = []
         for _ in range(episodes):
+            # Reset environment and model
             self.mdp.reset()
+            self.bandit.reset()
+
             done = False
             cumulative_reward = 0
             while not done:

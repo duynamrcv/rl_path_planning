@@ -1,4 +1,7 @@
-# Reinforcement Learning 
+# Reinforcement Learning
+
+## Demo
 ```
-python3 setup.py sdist bdist_wheel 
+python3 examples/example.py
 ```
+<img src="images/q_learning.png" alt="" width="60%"/>

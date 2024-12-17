@@ -4,6 +4,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from mdp_problem.grid_map import GridMap
 from model_free.q_learning import QLearning
+from multi_armed_bandit.epsilon_decreasing import EpsilonDecreasing
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -30,18 +31,26 @@ def plot_environment_and_path(mdp:GridMap, path):
     plt.grid(visible=True, color="black", linestyle="--", linewidth=0.5)
     plt.legend()
     plt.tight_layout()
-    plt.show()
+
+def plot_cumulative_rewards(cumulative_rewards):
+    plt.figure(figsize=(6,4))
+    plt.plot(cumulative_rewards)
+    plt.xlabel("Episodes")
+    plt.ylabel("Cumulative reward")
 
 if __name__ == "__main__":
     # Learning process
     mdp = GridMap()
-    planner = QLearning(mdp)
+    bandit = EpsilonDecreasing()
+    planner = QLearning(mdp, bandit)
     cumulative_rewards = planner.learn(episodes=2000)
 
     # Execution
-    state = (4, 0)
+    state = (1, 0)
     path = planner.execution(state)
     print("Optimal Path:", path)
 
     # Plot
     plot_environment_and_path(mdp, path)
+    plot_cumulative_rewards(cumulative_rewards)
+    plt.show()
