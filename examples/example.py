@@ -4,7 +4,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from mdp_problem.grid_map import GridMap
 from model_free.q_learning import QLearning
-from multi_armed_bandit.epsilon_decreasing import EpsilonDecreasing
+from multi_armed_bandit.softmax import Softmax
+from multi_armed_bandit.epsilon_greedy import EpsilonGreedy
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -41,9 +42,9 @@ def plot_cumulative_rewards(cumulative_rewards):
 if __name__ == "__main__":
     # Learning process
     mdp = GridMap()
-    bandit = EpsilonDecreasing()
+    bandit = Softmax()
     planner = QLearning(mdp, bandit)
-    cumulative_rewards = planner.learn(episodes=2000)
+    cumulative_rewards = planner.learn(episodes=1000)
 
     # Execution
     state = (1, 0)
