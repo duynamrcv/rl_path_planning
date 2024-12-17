@@ -2,7 +2,7 @@ import numpy as np
 from mdp_problem.grid_map import GridMap
 from multi_armed_bandit.multi_armed_bandit import MultiArmedBandit
 
-class QLearning():
+class SARSA():
     def __init__(self, mdp:GridMap, bandit:MultiArmedBandit,
                  learning_rate=0.01, reward_decay=0.9):
         self.mdp = mdp
@@ -32,18 +32,24 @@ class QLearning():
 
             done = False
             cumulative_reward = 0
+            action = self.choose_action(self.mdp.agent)
             while not done:
                 r, c = self.mdp.agent
-                action = self.choose_action(self.mdp.agent)
                 reward, done = self.mdp.step(action)
-                nr, nc = self.mdp.agent
+                
+                # Choose next action
+                next_action = self.choose_action(self.mdp.agent)
 
-                # Q-learning update
+                # SARSA update
+                nr, nc = self.mdp.agent
                 self.Q_table[r, c, self.mdp.action_space.index(action)] += self.lr * (
                     reward + \
-                    self.gamma * np.max(self.Q_table[nr, nc]) - \
+                    self.gamma * self.Q_table[nr, nc, self.mdp.action_space.index(next_action)] - \
                     self.Q_table[r, c, self.mdp.action_space.index(action)]
                 )
+
+                # Move to next action
+                action = next_action
                 
                 # Update cumulative reward 
                 cumulative_reward += reward
