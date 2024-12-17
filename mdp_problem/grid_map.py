@@ -1,7 +1,7 @@
 import numpy as np
-import time
+# from mdp_problem.mdp import MDP
 
-class Env():
+class GridMap():
     def __init__(self):
         self.action_space = ['up', 'down', 'left', 'right']
         self.action_map = {'up': (-1, 0), 'down': (1, 0), 'left': (0, -1), 'right': (0, 1)}
@@ -48,5 +48,3 @@ class Env():
             reward = -1
             done = False
         return reward, done
-
-    
