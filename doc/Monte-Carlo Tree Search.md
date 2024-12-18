@@ -312,3 +312,30 @@ class SingleAgentMCTS(MCTS):
 ## Function approximation
 As with standard Q-learning, [[Q-function approximation]] can be used to generalize learning in MCTS. In particular, an off-line method such as Q-learning or SARSA with Q-function approximation can be used to learn a general Q-function. Often this will work quite well, however, the issue with Q-function approximation is sometimes the approximation does not work well for certain states during execution.
 To mitigate this, we can then use MCTS (online planning) to search from the actual state, but starting with the pre-trained Q-function. This has two benefits:
+- The MCTS supplements the pre-trained Q-function by running simulations from the actual initial state $s_0$, which may reflect the real rewards more accurately than the pre-trained Q-function given that it is an approximation.
+- The pre-trained Q-function improves the MCTS search by guiding the selection step. In effect, the early simulations are not as random because there is some signal to use. This helps to mitigate the **cold start** problem, which is when we have no information to exploit at the start of learning.
+## Why does it work so well (sometimes)?
+It addresses exploitation vs. exploration comprehensively.
+- UCT is **systematic**:
+    - Policy evaluation is **exhaustive** up to a certain depth.
+    - Exploration aims to **minimize regret**.
+### Value iteration vs. MCTS
+Often the set of states reachable from the initial state $s_0$ using an optimal policy is much smaller than the set of total states. In this regards, value iteration is exhaustive: it calculates behavior from states that will never be encountered if we know the initial state of the problem.
+MCTS (and other search methods) methods thus can be used by just taking samples starting at $s_0$. However, the result is not as general as using value/policy iteration: the resulting solution will work only from the known initial state $s_0$ or any state reachable from $s_0$ using actions defined in the model. Whereas value iteration works from any state.
+
+|                      |        Value iteration        |                                    MCTS                                     |
+| -------------------- | :---------------------------: | :-------------------------------------------------------------------------: |
+| Cost                 |   Higher cost (exhaustive)    |             Lower cost (does not solve for entire state space)              |
+| Coverage/ Robustness | Higher (works from any state) | Lower (works only from initial state or state reachable from initial state) |
+This is important: *value iteration* is then more expensive for many problems, however, for an agent operating in its environment, we only solve exhaustively once, and we can use the resulting policy many times no matter state we are in latter. For *MCTS*, we need to solve **online** each time we encounter a state we have not considered before. 
+## Takeaways
+>[!success] Takeways
+>- **Monte Carlo Tree Search** (MCTS) is an anytime search algorithm, especially good for stochastic domains, such as MDPs.
+>	- It can be used for model-based or simulation-based problems.
+>	- Smart selection strategies are _crucial_ for good performance.
+>- **UCT** is the combination of MCTS and UCB1, and is a successful algorithm on many problems.
+
+
+| Previous                          |                         Next |
+| :-------------------------------- | ---------------------------: |
+| [[n-step reinforcement learning]] | [[Q-function approximation]] |
