@@ -23,7 +23,46 @@ MDPs consider **stochastic** non-determinism, where there is a probability distr
 **Transition probabilities** is effect of each action, including the probabilities of each outcome.
 **Reward** specifies the benefit or cost of executing an action in a state.
 **Discount factor** $\gamma$ determines how much a future reward should be discounted compared to a current reward.
-## MDPs vs deterministic search
+The abstract of an MDP:
+```python
+class MDP:
+    """ Return all states of this MDP """
+    def get_states(self):
+        abstract
+
+    """ Return all actions with non-zero probability from this state """
+    def get_actions(self, state):
+        abstract
+
+    """ Return all non-zero probability transitions for this action
+        from this state, as a list of (state, probability) pairs
+    """
+    def get_transitions(self, state, action):
+        abstract
+
+    """ Return the reward for transitioning from state to
+        nextState via action
+    """
+    def get_reward(self, state, action, next_state):
+        abstract
+
+    """ Return true if and only if state is a terminal state of this MDP """
+    def is_terminal(self, state):
+        abstract
+
+    """ Return the discount factor for this MDP """
+    def get_discount_factor(self):
+        abstract
+
+    """ Return the initial state of this MDP """
+    def get_initial_state(self):
+        abstract
+
+    """ Return all goal states of this MDP """
+    def get_goal_states(self):
+        abstract
+```
+### MDPs vs deterministic search
 There are four main differences:
 - The transition function is not deterministic. Each action has a probability of $P_a(s'|s)$ of ending  in state $s'$ if $a$ is executed in the state $s$, whereas in classical planning, the outcome of each action is known.
 - There are no goal states. Each action receives a reward when applied. The value of reward is dependent on the sate in which it is applied.
