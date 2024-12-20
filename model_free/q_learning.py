@@ -73,14 +73,15 @@ class QLearning():
         cumulative_rewards = self.learn(episodes)
         
         # Extract optimal path
-        state = init
         action_space = self.mdp.get_actions()
+        self.mdp.reset()
+        state = self.mdp.get_current_state()
+        done = False
         path = [state]
-        while state != goal:
+        while not done:
             r, c = state
-            # print(state)
             action = action_space[np.argmax(self.Q_table[r, c])]
-            dr, dc = self.mdp.action_map[action]
-            state = (r + dr, c + dc)
+            _, done = self.mdp.step(action)
+            state = self.mdp.get_current_state()
             path.append(state)
         return path, cumulative_rewards
