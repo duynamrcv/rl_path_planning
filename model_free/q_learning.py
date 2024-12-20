@@ -13,20 +13,17 @@ class QLearning():
 
         # Initialize Q-table
         rows, cols = self.mdp.get_states()
-        action_space = self.mdp.get_actions()
-        self.Q_table = np.zeros((rows, cols,
-                                 len(action_space)))
+        self.action_space = self.mdp.get_actions()
+        self.Q_table = np.zeros((rows, cols, len(self.action_space)))
 
     def choose_action(self, state):
         ''' Choose action (epsilon-greedy)
         '''
-        action_space = self.mdp.get_actions()
-        return self.bandit.select(state, action_space, self.Q_table)
+        return self.bandit.select(state, self.action_space, self.Q_table)
         
     def learn(self, episodes=2000):
         ''' Train Q-learning agent
         '''
-        action_space = self.mdp.get_actions()
         cumulative_rewards = []
         for _ in range(episodes):
             # Reset environment and model
@@ -45,10 +42,10 @@ class QLearning():
                 # Q-learning update
                 r, c = state
                 nr, nc = next_state
-                self.Q_table[r, c, action_space.index(action)] += self.lr * (
+                self.Q_table[r, c, self.action_space.index(action)] += self.lr * (
                     reward + \
                     self.gamma * np.max(self.Q_table[nr, nc]) - \
-                    self.Q_table[r, c, action_space.index(action)]
+                    self.Q_table[r, c, self.action_space.index(action)]
                 )
                 
                 # Update cumulative reward 
@@ -73,14 +70,13 @@ class QLearning():
         cumulative_rewards = self.learn(episodes)
         
         # Extract optimal path
-        action_space = self.mdp.get_actions()
         self.mdp.reset()
         state = self.mdp.get_current_state()
         done = False
         path = [state]
         while not done:
             r, c = state
-            action = action_space[np.argmax(self.Q_table[r, c])]
+            action = self.action_space[np.argmax(self.Q_table[r, c])]
             _, done = self.mdp.step(action)
             state = self.mdp.get_current_state()
             path.append(state)

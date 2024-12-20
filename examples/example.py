@@ -46,13 +46,13 @@ if __name__ == "__main__":
     # Learning process
     mdp = GridMap()
     bandit = Softmax()
-    planner = QLearning(mdp, bandit)
-    # planner = SARSA(mdp, bandit)
+    # planner = QLearning(mdp, bandit)
+    planner = SARSA(mdp, bandit)
 
     # Execution
-    state = (1, 0)
+    state = (4, 0)
     goal = (4, 7)
-    path, cumulative_rewards = planner.execution(state, goal, episodes=5000)
+    path, cumulative_rewards = planner.execution(state, goal, episodes=1000)
     print("Optimal Path:", path)
 
     # Plot
