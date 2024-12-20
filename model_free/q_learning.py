@@ -1,9 +1,9 @@
 import numpy as np
-from mdp_problem.grid_map import GridMap
+from mdp_problem.mdp import MDP
 from multi_armed_bandit.multi_armed_bandit import MultiArmedBandit
 
 class QLearning():
-    def __init__(self, mdp:GridMap, bandit:MultiArmedBandit,
+    def __init__(self, mdp:MDP, bandit:MultiArmedBandit,
                  learning_rate=0.01, reward_decay=0.9):
         self.mdp = mdp
         self.bandit = bandit
@@ -20,11 +20,13 @@ class QLearning():
     def choose_action(self, state):
         ''' Choose action (epsilon-greedy)
         '''
-        return self.bandit.select(state, self.mdp.action_space, self.Q_table)
+        action_space = self.mdp.get_actions()
+        return self.bandit.select(state, action_space, self.Q_table)
         
     def learn(self, episodes=2000):
         ''' Train Q-learning agent
         '''
+        action_space = self.mdp.get_actions()
         cumulative_rewards = []
         for _ in range(episodes):
             # Reset environment and model
@@ -34,19 +36,19 @@ class QLearning():
             done = False
             cumulative_reward = 0
             while not done:
-                state = self.mdp.agent
-                action = self.choose_action(self.mdp.agent)
-                self.mdp.step(action)
-                next_state = self.mdp.agent
-                reward, done = self.mdp.get_reward(state, action, next_state)
+                state = self.mdp.get_current_state()
+                action = self.choose_action(state)
+                reward, done = self.mdp.step(action)
+                next_state = self.mdp.get_current_state()
+                # print("Current: {}, Action: {}, Next: {}, Reward: {}".format(state, action, next_state, reward))
 
                 # Q-learning update
                 r, c = state
                 nr, nc = next_state
-                self.Q_table[r, c, self.mdp.action_space.index(action)] += self.lr * (
+                self.Q_table[r, c, action_space.index(action)] += self.lr * (
                     reward + \
                     self.gamma * np.max(self.Q_table[nr, nc]) - \
-                    self.Q_table[r, c, self.mdp.action_space.index(action)]
+                    self.Q_table[r, c, action_space.index(action)]
                 )
                 
                 # Update cumulative reward 
@@ -54,16 +56,31 @@ class QLearning():
             cumulative_rewards.append(cumulative_reward)
         return cumulative_rewards
     
-    def execution(self, init, goal):
-        self.mdp.set_initial_state(init)
-        self.mdp.set_goal_states(goal)
-        ...
+    def execution(self, init, goal, episodes=2000):
+        if self.mdp.is_valid(init):
+            self.mdp.set_initial_state(init)
+        else:
+            print("[ERROR] Invalid start state")
+            exit(0)
+
+        if self.mdp.is_valid(goal):
+            self.mdp.set_goal_states(goal)
+        else:
+            print("[ERROR] Invalid goal state")
+            exit(0)
+
+        # Learn the optimal path
+        cumulative_rewards = self.learn(episodes)
+        
         # Extract optimal path
+        state = init
+        action_space = self.mdp.get_actions()
         path = [state]
-        while state != self.mdp.goal:
+        while state != goal:
             r, c = state
-            action = self.mdp.action_space[np.argmax(self.Q_table[r, c])]
+            # print(state)
+            action = action_space[np.argmax(self.Q_table[r, c])]
             dr, dc = self.mdp.action_map[action]
             state = (r + dr, c + dc)
             path.append(state)
-        return path
+        return path, cumulative_rewards

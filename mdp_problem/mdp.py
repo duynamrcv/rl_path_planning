@@ -18,11 +18,11 @@ class MDP():
         pass
 
     @abstractmethod
-    def get_reward(self, state, action, next_state):
+    def is_valid(self, state):
         pass
 
     @abstractmethod
-    def is_terminal(self, state):
+    def get_current_state(self):
         pass
 
     @abstractmethod
@@ -31,4 +31,12 @@ class MDP():
 
     @abstractmethod
     def get_goal_states(self):
+        pass
+
+    @abstractmethod
+    def set_initial_state(self, state):
+        pass
+
+    @abstractmethod
+    def set_goal_states(self, goal):
         pass
