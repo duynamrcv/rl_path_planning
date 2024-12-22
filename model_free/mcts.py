@@ -25,20 +25,19 @@ class Node:
                 best_child = child
         return best_child
     
-class QLearning():
+class MCTS():
     def __init__(self, mdp:GridMap, exploration_weight=1.0):
         self.mdp = mdp
         self.exploration_weight = exploration_weight
 
-        # Initialize Q-table
+        # Initialize
         rows, cols = self.mdp.get_states()
         self.action_space = self.mdp.get_actions()
-        # self.Q_table = np.zeros((rows, cols, len(self.action_space)))
 
     def get_possible_actions(self, state):
         possible_actions = []
         for action in self.action_space:
-            action = self.mdp.action_map(action)
+            action = self.mdp.action_map[action]
             next_state = (state[0] + action[0], state[1] + action[1])
             if self.mdp.is_valid(next_state):
                 possible_actions.append(next_state)
@@ -65,6 +64,36 @@ class QLearning():
 
         root = Node(init)
         for _ in range(episodes):
+            node = root
+
             # Selection
             while node.children and node.is_fully_expanded(self.get_possible_actions(node.state)):
                 node = node.best_child(self.exploration_weight)
+
+            # Expansion
+            if node.state != goal:
+                actions = self.get_possible_actions(node.state)
+                for action in actions:
+                    if action not in [child.state for child in node.children]:
+                        child_node = Node(action, parent=node)
+                        node.children.append(child_node)
+                        node = child_node
+                        break
+            
+            # Simulation
+            reward = self.simulate(node.state)
+
+            # Backpropagation
+            while node is not None:
+                node.visits += 1
+                node.value += reward
+                node = node.parent
+        
+        # Extract the best path
+        path = [init]
+        node = root
+        while node.children:
+            node = node.best_child(0)  # No exploration weight during path extraction
+            path.append(node.state)
+
+        return path
