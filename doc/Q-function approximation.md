@@ -281,6 +281,6 @@ Approximating Q-functions using machine learning techniques such as linear funct
 >- **Deep Q-learning** offers an alternative in which we can learn a state representation, but requires more training data (more episodes) and has no convergence guarantees.
 
 
-| Previous                    |               Next |
-| :-------------------------- | -----------------: |
-| [[Monte-Carlo Tree Search]] | [[Reward shaping]] |
+| Previous                    |                     Next |
+| :-------------------------- | -----------------------: |
+| [[Monte-Carlo Tree Search]] | [[Policy-based methods]] |
