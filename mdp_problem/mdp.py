@@ -34,6 +34,10 @@ class MDP():
         pass
 
     @abstractmethod
+    def set_state(self, state):
+        pass
+
+    @abstractmethod
     def set_initial_state(self, state):
         pass
 

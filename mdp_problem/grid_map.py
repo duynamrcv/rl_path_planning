@@ -54,6 +54,9 @@ class GridMap(MDP):
             done = False
         return reward, done
     
+    def set_state(self, state):
+        self.agent = state
+
     def set_initial_state(self, state):
         self.init = state
 
