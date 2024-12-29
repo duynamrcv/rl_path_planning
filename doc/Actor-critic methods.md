@@ -120,6 +120,6 @@ class QActorCritic(ActorCritic):
 >- Like REINFORCE, **actor-critic** methods are policy-gradient based, so directly learn a policy instead of first learning a value function or Q-function.
 >- Actor-critic methods also learn a **value function or Q-function** to reduce the variance in the cumulative rewards.
 
-| Previous             |                                   Next |
-| :------------------- | -------------------------------------: |
-| [[Policy gradients]] | [[Modelling and abstraction for MDPs]] |
+| Previous             |                  Next |
+| :------------------- | --------------------: |
+| [[Policy gradients]] | [[Normal form games]] |

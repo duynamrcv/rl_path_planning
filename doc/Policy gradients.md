@@ -8,7 +8,7 @@ In policy gradient methods, we approximate the policy from the rewards and actio
 - Typically, we want the policy to be **stochastic**. Recall from the section on [[Markov Decision Processes#Policies|policies]] that a stochastic policy specifies a **probability distribution** over actions, defining the probability with which each action should be chosen.
 The goal of a policy gradient is to approximate the optimal policy $\pi_\theta(s,a)$ via gradient ascent on the expected return. Gradient ascent will find the best parameters θ for the particular MDP.
 ## Policy improvement using gradient ascent
-The goal of gradient ascent is to find weights of a policy function that maximises the expected return. This is done iteratively by calculating the gradient from some data and updating the weights of the policy.
+The goal of gradient ascent is to find weights of a policy function that maximizes the expected return. This is done iteratively by calculating the gradient from some data and updating the weights of the policy.
 The expected value of a policy $\pi_\theta$ with parameters $\theta$ is defined as:
 $$J(\theta)=V^{\pi_\theta}(s_0)$$
 where $V^{\pi_\theta}$ is the policy evaluation using the policy $\pi_\theta$ and $s_0$ is the initial state. These search for a local maximum in $J(\theta)$ by **ascending the gradient** of the policy with respect to the parameters $\theta$.
