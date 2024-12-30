@@ -53,11 +53,11 @@ This tree is used to explore different Monte-Carlo simulations to learn a Q-func
 >[!todo] Algorithm 1 - Monte-Carlo Tree Search
 >**Input**: MDP $M=\left\langle S,s_0,A,P_a(s'|s),r(s,a,s')\right\rangle$, Q-function $Q$, time limit $T$
 >**Output**: updated Q-function $Q$
->**while** current_time $< T$ **do**
->$\qquad$ selected_node $\leftarrow$ Select($s_0$)
->$\qquad$ child $\leftarrow$ Expand(selected_node) -- expand and choose a child node to simulate
->$\qquad G\leftarrow$ Simulate(child) -- simulate from child
->$\qquad$ Backpropagate(selected_node, child, $Q$, $G$)
+>**while** $current\_time < T$ **do**
+>$\qquad selected\_node \leftarrow Select(s_0)$
+>$\qquad child \leftarrow Expand(selected\_node)$ -- expand and choose a child node to simulate
+>$\qquad G\leftarrow Simulate(child)$ -- simulate from child
+>$\qquad Backpropagate(selected\_node, child, Q, G)$
 >**return** $Q$
 
 There are four main parts to the algorithm:

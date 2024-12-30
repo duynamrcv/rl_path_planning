@@ -47,25 +47,25 @@ The set of best responses for a normal form game can be calculated by searching 
 >[!todo] Algorithm 1 - Best response
 >**Input**: Normal form game $G=(N,A,u)$, agent $i$, and strategy profile $s_{-i}$ for agents other than $i$
 >**Output**: Set of best responses
->best_response $=\varnothing$
->best_response_value $=-\infty$
+>$best\_response=\varnothing$
+>$best\_response\_value=-\infty$
 >**for each** $s_i\in S_i$
->$\qquad$**if** $u(s_i,s_{-i})>$ best_response_value **then**
->$\qquad\qquad$best_response $=\{s_i\}$
->$\qquad$**else if** $u(s_i,s_{-i})=$ best_response_value **then**
->$\qquad\qquad$best_response $=$ best_response $\cup\{s_i\}$
->**return** best_response
+>$\qquad$**if** $u(s_i,s_{-i})> best\_response\_value$ **then**
+>$\qquad\qquad best_response=\{s_i\}$
+>$\qquad$**else if** $u(s_i,s_{-i})=best\_response\_value$ **then**
+>$\qquad\qquad best\_response = best\_response\cup\{s_i\}$
+>**return** $best\_response$
 
 This has complexity $O(|Si|)$.
 >[!todo] Algorithm 2 - Nash equilibria
 >**Input**: Normal form game $G=(N,A,u)$
 >**Output**: Set of Nash equilibria
->nash_equilibria $=\varnothing$
+>$nash\_equilibria=\varnothing$
 >**for each** $s_1\in A_1$
 >$\qquad$**for each** $s_2 \in A_2$
 >$\qquad\qquad$**if** $s_i\in BestResponse(i,s_j)$ **and** $s_j\in BestResponse(j,s_i)$ **then**
->$\qquad\qquad\qquad$ nash_equilibria $=$ nash_equilibria $\cup \{(s_i,s_j)\}$
->**return** nash_equilibria
+>$\qquad\qquad\qquad nash\_equilibria=nash\_equilibria\cup \{(s_i,s_j)\}$
+>**return** $nash\_equilibria$
 
 ## Mixed strategies
 >[!info] Definition – Expected utility of a pure strategy

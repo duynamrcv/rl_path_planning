@@ -22,7 +22,7 @@ There are many different techniques for model-free reinforcement learning, all w
 	- (2) policy has converged to an optimal policy
 	- (3) policy is 'good enough'
 ## Monte-Carlo reinforcement learning
- Monte-Carlo reinforcement learning is perhaps the simplest of reinforcement learning methods.The intuition is quite straightforward. Maintain a Q-function that records the value $Q(s,a)$ for every state-action pair:
+ Monte-Carlo reinforcement learning is perhaps the simplest of reinforcement learning methods. The intuition is quite straightforward. Maintain a Q-function that records the value $Q(s,a)$ for every state-action pair:
  - (1) choose an action using a multi-armed bandit algorithm;
  - (2) apply that action and receive the reward;
  - (3) update $Q(s,a)$ based on that reward
