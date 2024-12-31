@@ -3,7 +3,7 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from mdp_problem.grid_map import GridMap
-from model_free.dqn import DQNAgent
+from methods.dqn import DQNAgent
 
 import numpy as np
 import matplotlib.pyplot as plt

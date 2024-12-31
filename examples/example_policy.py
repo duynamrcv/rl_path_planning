@@ -3,7 +3,7 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from mdp_problem.grid_map import GridMap
-from model_free.policy_iteration import PolicyIteration
+from methods.policy_iteration import PolicyIteration
 
 import numpy as np
 import matplotlib.pyplot as plt

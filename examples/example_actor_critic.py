@@ -3,11 +3,7 @@ import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from mdp_problem.grid_map import GridMap
-from methods.q_learning import QLearning
-from methods.sarsa import SARSA
-from multi_armed_bandit.epsilon_decreasing import EpsilonDecreasing
-from multi_armed_bandit.softmax import Softmax
-from multi_armed_bandit.upper_confidence_bound import UCB1
+from methods.actor_critic import ActorCriticLearner
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -45,14 +41,12 @@ def plot_cumulative_rewards(cumulative_rewards):
 if __name__ == "__main__":
     # Learning process
     mdp = GridMap()
-    bandit = Softmax()
-    # planner = QLearning(mdp, bandit)
-    planner = SARSA(mdp, bandit)
+    planner = ActorCriticLearner(mdp)
 
     # Execution
     state = (1, 0)
     goal = (4, 7)
-    path, cumulative_rewards = planner.execution(state, goal, episodes=1000)
+    path, cumulative_rewards = planner.execution(state, goal, episodes=500)
     print("Optimal Path:", path)
 
     # Plot
