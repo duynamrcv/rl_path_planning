@@ -38,18 +38,19 @@ class GridMap(MDP):
         state = self.agent
         action = self.action_map[action]
         next_state = (state[0] + action[0], state[1] + action[1])
+        if not self.is_valid(next_state):
+            next_state = state
+
+        self.agent = next_state
 
         # Update agent and compute the reward
-        if next_state == self.goal:
-            self.agent = next_state
+        if self.agent == self.goal:
             reward = 100
             done = True
-        elif not self.is_valid(next_state):
-            self.agent = state
+        elif not self.is_valid(self.agent):
             reward = -100
             done = False
         else:
-            self.agent = next_state
             reward = -1
             done = False
         return reward, done
